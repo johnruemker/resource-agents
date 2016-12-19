@@ -247,6 +247,11 @@ is_exported() {
 	local dir=$1
 	local spec=$2
 	local rc
+
+	# exportfs command expects IPv6 addresses enclosed in []        
+	# brackets, but does not display them        
+	spec=$(echo $spec | sed 's/\[//;s/\]//')
+
 	format_exports | grep -q -x -F "$dir $spec"
 	rc=$?
 	if [ $rc -ne 0 -a "$spec" = "*" ]; then
